@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Route } from '@angular/router';
+import { MaterialModule } from '@angular/material';
 
 /* Hot Module Reloading */
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
@@ -26,6 +27,7 @@ import { BokehComponent } from './shared/components/bokeh/bokeh.component';
     BrowserModule,
     FormsModule,
     HttpModule,
+    MaterialModule,
     TappsRoutingModule,
   ],
   providers: [
