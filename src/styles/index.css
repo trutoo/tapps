@@ -1,6 +1,8 @@
 @import 'normalize.css';
 @import '@angular/material/core/theming/prebuilt/deeppurple-amber.css';
 
-body {
-  
+html {
+  width: 100%;
+  height: 100%;
+  background: #EECDA3 linear-gradient(to left, #EECDA3, #EF629F);
 }

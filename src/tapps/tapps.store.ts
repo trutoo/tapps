@@ -10,14 +10,14 @@ const defaultState: State = {
   // define your initial state here
 }
 
-const _store = new BehaviorSubject<State>(defaultState);
+const store = new BehaviorSubject<State>(defaultState);
 
 @Injectable()
 export class TappsStore {
-  private _store = _store;
-  changes = this._store
-    .asObservable()
-    .distinctUntilChanged()
+
+  private _store = store;
+
+  public changes = this._store.asObservable().distinctUntilChanged()
 
   setState(state: State) {
     this._store.next(state);

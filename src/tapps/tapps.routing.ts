@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 /* Tapps */
 import { ArcModule } from './modules/arc/arc.module';
+import { MarjaModule } from './modules/marja/marja.module';
 
 export const ROUTES: Routes = [
   {
@@ -13,6 +14,10 @@ export const ROUTES: Routes = [
   {
     path: 'arc',
     loadChildren: () => ArcModule,
+  },
+  {
+    path: 'marja',
+    loadChildren: () => MarjaModule,
   }
 ];
 

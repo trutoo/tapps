@@ -4,6 +4,9 @@ import { bootloader } from '@angularclass/hmr';
 
 import { TappsModule } from './tapps/tapps.module';
 
+/* Global Styles */
+import './styles/index.css';
+
 if (process.env.ENV === 'production') {
   enableProdMode();
 }

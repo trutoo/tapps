@@ -1,0 +1,15 @@
+<md-card>
+
+  <md-card-header>
+    <md-card-title>Tiny Marja App</md-card-title>
+    <md-card-subtitle>The greatest app idea in the world!</md-card-subtitle>
+  </md-card-header>
+
+  <md-card-content>
+
+    <p class="cool-text">Marja är <strong>{{coolness}}%</strong> cool</p>
+    <md-slider class="cool-slider" max="200" min="100" step="1" thumb-label="true" value="100" [(ngModel)]="coolness"></md-slider>
+
+  </md-card-content>
+
+</md-card>

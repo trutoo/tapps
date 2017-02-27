@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MathX } from '../../utilities/math';
+import { MathX } from '../../utilities/mathx';
 import { Color } from '../../utilities/color';
 
 export class LightParams {
