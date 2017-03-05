@@ -5,7 +5,7 @@ export class MathX {
    * @param max is the upper constraint for the random number.
    */
   static randomBetween(min: number, max: number): number {
-    return Math.random() * (max - min + 1) + min;
+    return Math.random() * (max - min) + min;
   };
 
   /*
