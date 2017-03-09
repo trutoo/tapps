@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TappsStore } from '../../tapps.store';
+import { Theme } from '../../shared/components/bokeh/bokeh.component';
 
 @Component({
   selector: 'm-arc',
@@ -8,7 +10,19 @@ import { Component, OnInit } from '@angular/core';
 
 export class ArcComponent implements OnInit {
 
-  constructor() { }
+  static Theme: Theme = {
+    primary: '#ffd89b',
+    secondary: '#19547b',
+  }
 
-  ngOnInit() { }
+  constructor(
+    private store: TappsStore
+  ) { }
+
+  ngOnInit() {
+
+    this.store.setState({
+      theme: ArcComponent.Theme,
+    });
+  }
 }

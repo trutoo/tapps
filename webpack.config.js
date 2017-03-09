@@ -194,7 +194,7 @@ module.exports = function (env) {
         stats: 'minimal'
       },
 
-      devtool: 'cheap-module-eval-source-map',
+      devtool: 'source-map',
     });
   }
 

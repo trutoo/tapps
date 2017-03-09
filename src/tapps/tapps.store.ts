@@ -1,13 +1,14 @@
+import { Theme } from './shared/components/bokeh/bokeh.component';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 export interface State {
-  // define your state here
+  theme: Theme;
 }
 
 const defaultState: State = {
-  // define your initial state here
+  theme: { primary: 'white', secondary: 'black' },
 }
 
 const store = new BehaviorSubject<State>(defaultState);
@@ -20,7 +21,7 @@ export class TappsStore {
   public changes = this._store.asObservable().distinctUntilChanged()
 
   setState(state: State) {
-    this._store.next(state);
+    this._store.next(Object.assign({}, this.getState(), state));
   }
 
   getState(): State {

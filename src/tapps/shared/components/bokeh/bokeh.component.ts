@@ -1,7 +1,13 @@
+import { TappsStore } from '../../../tapps.store';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MathX } from '../../utilities/mathx';
 import { Color } from '../../utilities/color';
 import { Light, LightMovement } from './light';
+
+export interface Theme {
+  primary: string;
+  secondary: string;
+}
 
 export interface BokehLayer {
   canvas: HTMLCanvasElement;
@@ -22,13 +28,33 @@ export class BokehComponent implements OnInit {
 
   private back: BokehLayer;
   private fore: BokehLayer;
+  private theme: Theme;
 
-  constructor() {
+  constructor(
+    private store: TappsStore,
+  ) {
     this.onResize = this.onResize.bind(this);
     this.onRender = this.onRender.bind(this);
+    this.store.changes.pluck('theme').subscribe((theme: Theme) => {
+      if (!theme) return;
+      this.theme = theme;
+      if (!this.back) return;
+      this.back.ctx.clearRect(0, 0, this.fore.canvas.width, this.fore.canvas.height);
+      this.back.lights.clear();
+      this.createBackground();
+      this.renderBackground();
+    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    var test = Color.FromAlphaHex('#90ef629f');
+    console.log(test.r, test.g, test.b, test.a);
+    console.log(test.h, test.s, test.l, test.a);
+    console.log(test.toHSLA());
+    //const color = Color.toHSLA(light.hue, light.saturation, light.lightness, light.alpha);
+
+
+  }
 
   ngAfterViewInit() {
     this.back = {
@@ -54,6 +80,7 @@ export class BokehComponent implements OnInit {
     this.back.ctx.clearRect(0, 0, this.back.canvas.width, this.back.canvas.height);
     this.fore.ctx.clearRect(0, 0, this.fore.canvas.width, this.fore.canvas.height);
     this.back.lights.clear();
+    this.fore.lights.clear();
     this.back = null;
     this.fore = null;
     window.removeEventListener('resize', this.onResize);
@@ -62,6 +89,7 @@ export class BokehComponent implements OnInit {
   private onResize() {
     this.back.canvas.width = this.fore.canvas.width = window.innerWidth;
     this.back.canvas.height = this.fore.canvas.height = window.innerHeight;
+    this.renderBackground();
   }
 
   private onRender() {
@@ -90,8 +118,8 @@ export class BokehComponent implements OnInit {
 
   private renderBackground() {
     const gradient = this.back.ctx.createLinearGradient(0, 0, this.back.canvas.width, this.back.canvas.height);
-    gradient.addColorStop(0, '#EECDA3');
-    gradient.addColorStop(1, '#EF629F');
+    gradient.addColorStop(0, this.theme.primary);
+    gradient.addColorStop(1, this.theme.secondary);
     this.back.ctx.fillStyle = gradient;
     this.back.ctx.fillRect(0, 0, this.back.canvas.width, this.back.canvas.height);
 
@@ -103,7 +131,8 @@ export class BokehComponent implements OnInit {
 
   private renderLight(context: CanvasRenderingContext2D, light: Light) {
     this.fore.ctx.globalCompositeOperation = 'lighter';
-    const color = Color.hsla(light.hue, light.saturation, light.lightness, light.alpha);
+    const color = 'brown';
+    //const color = Color.toHSLA(light.hue, light.saturation, light.lightness, light.alpha);
     if (light.blur > 0)
       context.fillStyle = 'black';
     else
@@ -123,6 +152,7 @@ export class BokehComponent implements OnInit {
   private createBackground() {
     const sizeBase = this.fore.canvas.width + this.fore.canvas.height;
     const hueBase = MathX.randomBetween(0, 360);
+    this.back.lights.clear();
     for (var i = 0; i < sizeBase * 0.1; i++) {
       const light = new Light(
         MathX.randomBetween(1, sizeBase * 0.02), // Radius
@@ -144,6 +174,7 @@ export class BokehComponent implements OnInit {
 
   private createForeground() {
     const sizeBase = this.fore.canvas.width + this.fore.canvas.height;
+    this.fore.lights.clear();
     for (var i = 0; i < sizeBase * 0.01; i++) {
       const light = Light.White(
         MathX.randomBetween(1, sizeBase * 0.01), // Radius
