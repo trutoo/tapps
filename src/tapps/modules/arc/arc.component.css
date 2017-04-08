@@ -1,5 +1,29 @@
+$c_primary: #f79d00;
+$c_secondary: #64f38c;
+
 :host {
   display: block;
-  margin: 1rem 0;
-  padding: 1rem;
-}
+  margin: 0 auto;
+  max-width: 720px;
+
+  .mat-card-header {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $c_primary;
+  }
+
+  .cool-text {
+    text-align: center;
+
+    strong {
+      color: $c_secondary;
+    }
+  }
+
+  .cool-slider {
+    width: 100%;
+  }
+
+  /* background: #ffd89b linear-gradient(to left, #ffd89b, #19547b); */
+  /* background: #e96443 linear-gradient(to left, #e96443, #904e95); */
+  /* background: #eecda3 linear-gradient(to left, #eecda3, #ef629f); */
+}        

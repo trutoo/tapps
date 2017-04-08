@@ -11,12 +11,14 @@ import { Theme } from '../../shared/components/bokeh/bokeh.component';
 export class ArcComponent implements OnInit {
 
   static Theme: Theme = {
-    primary: '#ffd89b',
-    secondary: '#19547b',
+    primary: '#f79d00',
+    // primary: '#ffd89b',
+    secondary: '#64f38c',
+    // secondary: '#19547b',
   }
 
   constructor(
-    private store: TappsStore
+    public store: TappsStore
   ) { }
 
   ngOnInit() {

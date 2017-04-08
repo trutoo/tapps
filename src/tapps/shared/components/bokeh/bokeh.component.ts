@@ -23,10 +23,20 @@ export interface BokehLayer {
 
 export class BokehComponent implements OnInit {
 
+  static TRANSITION_DELAY = 500;
+
   @ViewChild('background') backgroundRef: ElementRef;
+  @ViewChild('backgroundStore') backgroundStoreRef: ElementRef;
   @ViewChild('foreground') foregroundRef: ElementRef;
 
+  public timing = {
+    elapsed: 0,
+    transition: 0,
+    time: Date.now(),
+  };
+
   private back: BokehLayer;
+  private backStore: BokehLayer;
   private fore: BokehLayer;
   private theme: Theme;
 
@@ -35,25 +45,23 @@ export class BokehComponent implements OnInit {
   ) {
     this.onResize = this.onResize.bind(this);
     this.onRender = this.onRender.bind(this);
+
     this.store.changes.pluck('theme').subscribe((theme: Theme) => {
       if (!theme) return;
       this.theme = theme;
+
       if (!this.back) return;
-      this.back.ctx.clearRect(0, 0, this.fore.canvas.width, this.fore.canvas.height);
-      this.back.lights.clear();
+      this.timing.transition = 0;
       this.createBackground();
       this.renderBackground();
     });
   }
 
   ngOnInit() {
-    var test = Color.FromAlphaHex('#90ef629f');
+    var test = Color.FromAHex('#90ef629f');
     console.log(test.r, test.g, test.b, test.a);
-    console.log(test.h, test.s, test.l, test.a);
-    console.log(test.toHSLA());
+    console.log(test.toHSLAString());
     //const color = Color.toHSLA(light.hue, light.saturation, light.lightness, light.alpha);
-
-
   }
 
   ngAfterViewInit() {
@@ -61,6 +69,11 @@ export class BokehComponent implements OnInit {
       canvas: this.backgroundRef.nativeElement,
       ctx: this.backgroundRef.nativeElement.getContext('2d'),
       lights: new Set<Light>(),
+    };
+    this.backStore = {
+      canvas: this.backgroundStoreRef.nativeElement,
+      ctx: this.backgroundStoreRef.nativeElement.getContext('2d'),
+      lights: null,
     };
     this.fore = {
       canvas: this.foregroundRef.nativeElement,
@@ -78,28 +91,51 @@ export class BokehComponent implements OnInit {
 
   ngOnDestroy() {
     this.back.ctx.clearRect(0, 0, this.back.canvas.width, this.back.canvas.height);
+    this.backStore.ctx.clearRect(0, 0, this.backStore.canvas.width, this.backStore.canvas.height);
     this.fore.ctx.clearRect(0, 0, this.fore.canvas.width, this.fore.canvas.height);
+
     this.back.lights.clear();
     this.fore.lights.clear();
+
     this.back = null;
+    this.backStore = null;
     this.fore = null;
     window.removeEventListener('resize', this.onResize);
   }
 
   private onResize() {
-    this.back.canvas.width = this.fore.canvas.width = window.innerWidth;
-    this.back.canvas.height = this.fore.canvas.height = window.innerHeight;
+    this.back.canvas.width = this.backStore.canvas.width = this.fore.canvas.width = window.innerWidth;
+    this.back.canvas.height = this.backStore.canvas.height = this.fore.canvas.height = window.innerHeight;
     this.renderBackground();
   }
 
   private onRender() {
+    const now = Date.now();
+    const delta = now - this.timing.time;
+    this.timing.elapsed += delta;
+    this.timing.time = now;
+    window.requestAnimationFrame(this.onRender);
+
     if (!this.back || !this.fore)
       return;
 
-    window.requestAnimationFrame(this.onRender);
     this.fore.ctx.clearRect(0, 0, this.fore.canvas.width, this.fore.canvas.height);
+    this.fore.ctx.save();
     this.fore.ctx.globalCompositeOperation = 'source-over';
-    this.fore.ctx.drawImage(this.back.canvas, 0, 0);
+
+    /* Fade in the new background */
+    if (this.timing.transition < BokehComponent.TRANSITION_DELAY) {
+      this.fore.ctx.drawImage(this.backStore.canvas, 0, 0);
+      this.fore.ctx.globalAlpha = this.timing.transition / BokehComponent.TRANSITION_DELAY;
+      this.fore.ctx.drawImage(this.back.canvas, 0, 0);
+      this.timing.transition += delta;
+
+    /* Background */
+    } else {
+      this.fore.ctx.drawImage(this.back.canvas, 0, 0);
+    }
+
+    this.fore.ctx.restore();
 
     /* Foreground */
     this.fore.lights.forEach((light: Light) => {
@@ -117,6 +153,12 @@ export class BokehComponent implements OnInit {
   }
 
   private renderBackground() {
+    /* Store the old background */
+    this.backStore.ctx.clearRect(0, 0, this.backStore.canvas.width, this.backStore.canvas.height);
+    this.backStore.ctx.drawImage(this.back.canvas, 0, 0);
+
+    /* Create a new background */
+    this.back.ctx.clearRect(0, 0, this.back.canvas.width, this.back.canvas.height);
     const gradient = this.back.ctx.createLinearGradient(0, 0, this.back.canvas.width, this.back.canvas.height);
     gradient.addColorStop(0, this.theme.primary);
     gradient.addColorStop(1, this.theme.secondary);
@@ -153,15 +195,17 @@ export class BokehComponent implements OnInit {
     const sizeBase = this.fore.canvas.width + this.fore.canvas.height;
     const hueBase = MathX.randomBetween(0, 360);
     this.back.lights.clear();
-    for (var i = 0; i < sizeBase * 0.1; i++) {
-      const light = new Light(
-        MathX.randomBetween(1, sizeBase * 0.02), // Radius
-        MathX.randomBetween(10, sizeBase * 0.02), // Blur
-        MathX.randomBetween(hueBase, hueBase + 100), // Color
-        MathX.randomBetween(10, 70), // Saturation
-        MathX.randomBetween(20, 50), // Brightness
-        MathX.randomBetween(0.05, 0.2), // Alpha
-      );
+    for (var i = 0; i < sizeBase * 0.03; i++) {
+      const light = new Light({
+        radius: MathX.randomBetween(1, sizeBase * 0.02), // Radius
+        blur: MathX.randomBetween(10, sizeBase * 0.02), // Blur
+        color: new Color(
+          MathX.randomBetween(hueBase, hueBase + 100), // Color
+          MathX.randomBetween(10, 70), // Saturation
+          MathX.randomBetween(20, 50), // Brightness
+          MathX.randomBetween(0.05, 0.2), // Alpha
+        )
+      });
       light.setMovement({
         x: MathX.randomBetween(0, this.fore.canvas.width),
         y: MathX.randomBetween(0, this.fore.canvas.height),
