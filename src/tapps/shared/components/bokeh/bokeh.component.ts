@@ -31,7 +31,7 @@ export class BokehComponent implements OnInit {
 
   public timing = {
     elapsed: 0,
-    transition: 0,
+    transition: BokehComponent.TRANSITION_DELAY,
     time: Date.now(),
   };
 
@@ -48,10 +48,12 @@ export class BokehComponent implements OnInit {
 
     this.store.changes.pluck('theme').subscribe((theme: Theme) => {
       if (!theme) return;
+
+      /* Transition from a previous theme */
+      if (this.theme) this.timing.transition = 0;
       this.theme = theme;
 
       if (!this.back) return;
-      this.timing.transition = 0;
       this.createBackground();
       this.renderBackground();
     });
@@ -120,22 +122,20 @@ export class BokehComponent implements OnInit {
       return;
 
     this.fore.ctx.clearRect(0, 0, this.fore.canvas.width, this.fore.canvas.height);
-    this.fore.ctx.save();
-    this.fore.ctx.globalCompositeOperation = 'source-over';
 
     /* Fade in the new background */
     if (this.timing.transition < BokehComponent.TRANSITION_DELAY) {
+      this.fore.ctx.save();
       this.fore.ctx.drawImage(this.backStore.canvas, 0, 0);
       this.fore.ctx.globalAlpha = this.timing.transition / BokehComponent.TRANSITION_DELAY;
       this.fore.ctx.drawImage(this.back.canvas, 0, 0);
       this.timing.transition += delta;
+      this.fore.ctx.restore();
 
-    /* Background */
+      /* Background */
     } else {
       this.fore.ctx.drawImage(this.back.canvas, 0, 0);
     }
-
-    this.fore.ctx.restore();
 
     /* Foreground */
     this.fore.lights.forEach((light: Light) => {
@@ -165,26 +165,28 @@ export class BokehComponent implements OnInit {
     this.back.ctx.fillStyle = gradient;
     this.back.ctx.fillRect(0, 0, this.back.canvas.width, this.back.canvas.height);
 
-    this.back.ctx.globalCompositeOperation = 'lighter';
     this.back.lights.forEach((light: Light) => {
       this.renderLight(this.back.ctx, light);
     });
   }
 
   private renderLight(context: CanvasRenderingContext2D, light: Light) {
-    this.fore.ctx.globalCompositeOperation = 'lighter';
     const color = 'brown';
     //const color = Color.toHSLA(light.hue, light.saturation, light.lightness, light.alpha);
+    context.save();
     if (light.blur > 0)
       context.fillStyle = 'black';
     else
       context.fillStyle = color;
+
+    context.globalCompositeOperation = 'lighter';
     context.shadowColor = color;
     context.shadowBlur = light.blur;
     context.beginPath();
     context.arc(light.x, light.y, light.radius, 0, Math.PI * 2);
     context.closePath();
     context.fill();
+    context.restore();
   }
 
   //------------------------------------------------------------------------------------
@@ -194,6 +196,7 @@ export class BokehComponent implements OnInit {
   private createBackground() {
     const sizeBase = this.fore.canvas.width + this.fore.canvas.height;
     const hueBase = MathX.randomBetween(0, 360);
+    console.log(hueBase);
     this.back.lights.clear();
     for (var i = 0; i < sizeBase * 0.03; i++) {
       const light = new Light({
