@@ -3,12 +3,17 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/distinctUntilChanged';
 
+import { Color } from './shared/utilities/color';
+
 export interface State {
   theme: Theme;
 }
 
 const defaultState: State = {
-  theme: { primary: 'white', secondary: 'black' },
+  theme: {
+    primary: new Color(255, 255, 255),
+    secondary: new Color(0, 0, 0),
+  },
 }
 
 const store = new BehaviorSubject<State>(defaultState);

@@ -1,8 +1,12 @@
 :host {
+  display: block;
+  height: 100%;
+
   main {
-    position: relative;
-    display: block;
-    padding: 2rem;
-    z-index: 1;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
 }

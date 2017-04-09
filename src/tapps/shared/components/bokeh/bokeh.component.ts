@@ -5,8 +5,8 @@ import { Color } from '../../utilities/color';
 import { Light, LightMovement } from './light';
 
 export interface Theme {
-  primary: string;
-  secondary: string;
+  primary: Color;
+  secondary: Color;
 }
 
 export interface BokehLayer {
@@ -61,8 +61,8 @@ export class BokehComponent implements OnInit {
 
   ngOnInit() {
     var test = Color.FromAHex('#90ef629f');
-    console.log(test.r, test.g, test.b, test.a);
-    console.log(test.toHSLAString());
+    //console.log(test.r, test.g, test.b, test.a);
+    //console.log(test.toHSLAString());
     //const color = Color.toHSLA(light.hue, light.saturation, light.lightness, light.alpha);
   }
 
@@ -160,8 +160,8 @@ export class BokehComponent implements OnInit {
     /* Create a new background */
     this.back.ctx.clearRect(0, 0, this.back.canvas.width, this.back.canvas.height);
     const gradient = this.back.ctx.createLinearGradient(0, 0, this.back.canvas.width, this.back.canvas.height);
-    gradient.addColorStop(0, this.theme.primary);
-    gradient.addColorStop(1, this.theme.secondary);
+    gradient.addColorStop(0, this.theme.primary.toHSLAString());
+    gradient.addColorStop(1, this.theme.secondary.toHSLAString());
     this.back.ctx.fillStyle = gradient;
     this.back.ctx.fillRect(0, 0, this.back.canvas.width, this.back.canvas.height);
 
@@ -171,7 +171,7 @@ export class BokehComponent implements OnInit {
   }
 
   private renderLight(context: CanvasRenderingContext2D, light: Light) {
-    const color = 'brown';
+    const color = light.color.toHSLAString();
     //const color = Color.toHSLA(light.hue, light.saturation, light.lightness, light.alpha);
     context.save();
     if (light.blur > 0)
@@ -195,18 +195,19 @@ export class BokehComponent implements OnInit {
 
   private createBackground() {
     const sizeBase = this.fore.canvas.width + this.fore.canvas.height;
+    const primary = this.theme.primary.hsl;
+    const secondary = this.theme.secondary.hsl;
     const hueBase = MathX.randomBetween(0, 360);
-    console.log(hueBase);
     this.back.lights.clear();
-    for (var i = 0; i < sizeBase * 0.03; i++) {
+    for (var i = 0; i < sizeBase * 0.05; i++) {
       const light = new Light({
-        radius: MathX.randomBetween(1, sizeBase * 0.02), // Radius
-        blur: MathX.randomBetween(10, sizeBase * 0.02), // Blur
-        color: new Color(
-          MathX.randomBetween(hueBase, hueBase + 100), // Color
-          MathX.randomBetween(10, 70), // Saturation
-          MathX.randomBetween(20, 50), // Brightness
-          MathX.randomBetween(0.05, 0.2), // Alpha
+        radius: MathX.randomBetween(1, sizeBase * 0.04), // Radius
+        blur: MathX.randomBetween(10, sizeBase * 0.04), // Blur
+        color: Color.FromHSLA(
+          MathX.randomBetween(primary.hue, secondary.hue) / 360, // Color
+          MathX.randomBetween(0.1, 0.7), // Saturation
+          MathX.randomBetween(0.5, 0.7), // Brightness
+          MathX.randomBetween(0.05, 0.1), // Alpha
         )
       });
       light.setMovement({
@@ -222,10 +223,10 @@ export class BokehComponent implements OnInit {
   private createForeground() {
     const sizeBase = this.fore.canvas.width + this.fore.canvas.height;
     this.fore.lights.clear();
-    for (var i = 0; i < sizeBase * 0.01; i++) {
+    for (var i = 0; i < sizeBase * 0.05; i++) {
       const light = Light.White(
         MathX.randomBetween(1, sizeBase * 0.01), // Radius
-        MathX.randomBetween(0.05, 0.1), // Alpha
+        MathX.randomBetween(0.01, 0.05), // Alpha
       );
       light.setMovement({
         x: MathX.randomBetween(0, this.fore.canvas.width),

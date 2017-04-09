@@ -1,13 +1,52 @@
 <md-card>
 
   <md-card-header>
-    <md-card-title>Tiny Marja App <a routerLink="/marja">Marja</a></md-card-title>
-    <md-card-subtitle>The greatest app idea in the world!</md-card-subtitle>
+    <md-card-title>Aspect Ratio Calculator</md-card-title>
   </md-card-header>
 
   <md-card-content>
 
-    <p class="cool-text">Marja är <strong>coolness%</strong> cool</p>
+    <table>
+      <tr>
+        <td>
+          <md-input-container>
+            <input type="number" mdInput placeholder="Width 1" [ngModel]="width1" (ngModelChange)="onChange($event, 'width1')">
+          </md-input-container>
+        </td>
+
+        <td>
+          <md-input-container>
+            <input type="number" mdInput placeholder="Width 2" [ngModel]="width2" (ngModelChange)="onChange($event, 'width2')">
+          </md-input-container>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <md-input-container>
+            <input type="number" mdInput placeholder="Height 2" [ngModel]="height1" (ngModelChange)="onChange($event, 'height1')">
+          </md-input-container>
+        </td>
+
+        <td>
+          <md-input-container>
+            <input type="number" mdInput placeholder="Height 2" [ngModel]="height2" (ngModelChange)="onChange($event, 'height2')">
+          </md-input-container>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Comparison ratio -->
+    <md-button-toggle-group #group="mdButtonToggleGroup">
+      <md-button-toggle value="16:9">16:9</md-button-toggle>
+      <md-button-toggle value="21:9">21:9</md-button-toggle>
+      <md-button-toggle value="4:3">4:3</md-button-toggle>
+      <md-button-toggle value="16:9">16:9</md-button-toggle>
+    </md-button-toggle-group>
+
+    <div class="comparison">
+      {{group.value}}
+    </div>
 
   </md-card-content>
 

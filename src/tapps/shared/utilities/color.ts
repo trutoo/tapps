@@ -51,7 +51,7 @@ export class Color {
       g = Color.hueToRgb(p, q, hue);
       b = Color.hueToRgb(p, q, hue - 1 / 3);
     }
-    return new Color(r, g, b, alpha);
+    return new Color(r * 255, g * 255, b * 255, alpha);
   }
 
   //------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ export class Color {
   // GETTERS
   //------------------------------------------------------------------------------------
 
-  private get hsl(): { hue: number, saturation: number, lightness: number } {
+  public get hsl(): { hue: number, saturation: number, lightness: number } {
     const r = this.r / 255;
     const g = this.g / 255;
     const b = this.b / 255;
@@ -118,7 +118,7 @@ export class Color {
     }
   }
 
-  private get hsla(): { hue: number, saturation: number, lightness: number, alpha: number } {
+  public get hsla(): { hue: number, saturation: number, lightness: number, alpha: number } {
     return Object.assign({ alpha: this.a }, this.hsl);
   }
 

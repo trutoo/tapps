@@ -3,7 +3,9 @@ $c_secondary: #ef629f;
 
 :host {
   display: block;
-  margin: 0 auto;
+  margin: 0 20px;
+  width: 100%;
+  min-width: 280px;
   max-width: 720px;
 
   .mat-card-header {

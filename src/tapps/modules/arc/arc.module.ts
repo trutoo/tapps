@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Route } from '@angular/router';
 import { MaterialModule } from '@angular/material';
 
@@ -14,6 +16,8 @@ export const ROUTES: Route[] = [
 
 @NgModule({
   imports: [
+    CommonModule,
+    FormsModule,
     MaterialModule,
     RouterModule.forChild(ROUTES)
   ],

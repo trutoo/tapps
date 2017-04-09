@@ -3,24 +3,41 @@ $c_secondary: #64f38c;
 
 :host {
   display: block;
-  margin: 0 auto;
+  margin: 0 24px;
+  width: 100%;
+  min-width: 272px;
   max-width: 720px;
 
   .mat-card-header {
-    padding-bottom: 1rem;
+    font-size: 1.5em;
     border-bottom: 1px solid $c_primary;
   }
 
-  .cool-text {
+  .mat-card-content {
     text-align: center;
+  }
 
-    strong {
-      color: $c_secondary;
+  .mat-input-container {
+    width: 100%;
+    font-size: 1.5em;
+
+    /deep/ .mat-input-placeholder {
+      text-align: center;
+    }
+
+    .mat-input-element {
+      text-align: center;
+      padding-left: 15px;
     }
   }
 
-  .cool-slider {
+  table {
+    padding: 24px 0;
     width: 100%;
+
+    td {
+      padding: 0 24px;
+    }
   }
 
   /* background: #ffd89b linear-gradient(to left, #ffd89b, #19547b); */
