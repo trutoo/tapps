@@ -163,6 +163,7 @@ export class BokehComponent implements OnInit {
     gradient.addColorStop(0, this.theme.primary.toHSLAString());
     gradient.addColorStop(1, this.theme.secondary.toHSLAString());
     this.back.ctx.fillStyle = gradient;
+    this.back.ctx.fillStyle = 'black';
     this.back.ctx.fillRect(0, 0, this.back.canvas.width, this.back.canvas.height);
 
     this.back.lights.forEach((light: Light) => {

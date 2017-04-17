@@ -10,13 +10,13 @@
       <tr>
         <td>
           <md-input-container>
-            <input type="number" mdInput placeholder="Width 1" [ngModel]="width1" (ngModelChange)="onChange($event, 'width1')">
+            <input type="number" mdInput placeholder="Width 1" [(ngModel)]="width1" (ngModelChange)="onChange('width1')">
           </md-input-container>
         </td>
 
         <td>
           <md-input-container>
-            <input type="number" mdInput placeholder="Width 2" [ngModel]="width2" (ngModelChange)="onChange($event, 'width2')">
+            <input type="number" mdInput placeholder="Width 2" [(ngModel)]="width2" (ngModelChange)="onChange('width2')">
           </md-input-container>
         </td>
       </tr>
@@ -24,13 +24,13 @@
       <tr>
         <td>
           <md-input-container>
-            <input type="number" mdInput placeholder="Height 2" [ngModel]="height1" (ngModelChange)="onChange($event, 'height1')">
+            <input type="number" mdInput placeholder="Height 2" [(ngModel)]="height1" (ngModelChange)="onChange('height1')">
           </md-input-container>
         </td>
 
         <td>
           <md-input-container>
-            <input type="number" mdInput placeholder="Height 2" [ngModel]="height2" (ngModelChange)="onChange($event, 'height2')">
+            <input type="number" mdInput placeholder="Height 2" [(ngModel)]="height2" (ngModelChange)="onChange('height2')">
           </md-input-container>
         </td>
       </tr>

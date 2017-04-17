@@ -1,0 +1,14 @@
+<md-card>
+
+  <md-card-header>
+    <a class="close">&#x2715;</a>
+    <md-card-title>Natural Language Convert</md-card-title>
+  </md-card-header>
+
+  <md-card-content>
+    <textarea placeholder="$10 in sek" (input)="input($event)" (scroll)="scroll($event)"></textarea>
+    <p #contentDOM class="content" [innerHTML]="content"><i class="caret"></i></p>
+    <aside>{{result}}</aside>
+  </md-card-content>
+
+</md-card>

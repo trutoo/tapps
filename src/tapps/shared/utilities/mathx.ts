@@ -9,6 +9,15 @@ export class MathX {
   };
 
   /*
+   * Returns a random value between a given maximum and minimum.
+   * @param min is the lower constraint for the random number.
+   * @param max is the upper constraint for the random number.
+   */
+  static roundDecimals(value: number, precision: number): number {
+    return Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision);
+  };
+
+  /*
    * Returns the value contrained by a minimum and maximum.
    * @param value which is to be contraint by the min and max.
    * @param min is the lower constraint for the value.

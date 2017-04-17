@@ -1,0 +1,101 @@
+@import '/styles/constants.css';
+@import '/styles/mixins.css';
+$c_primary: #f3904f;
+$c_secondary: #3b4371;
+
+:host {
+  display: block;
+  margin: 0 24px;
+  width: 100%;
+  min-width: 272px;
+  max-width: 720px;
+
+  .mat-card {
+    position: relative;
+    background: linear-gradient(to bottom, #fff, #f5f2f0 1rem);
+
+    /*
+    border-radius: 6px;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+    */
+
+    &-header {
+      font-size: 1.5em;
+      border-bottom: 1px solid $c_primary;
+
+      .close { position: absolute;
+        right: 2.4rem;
+        width: 0.9rem;
+        height: 0.9rem;
+        top: 2.4rem;
+        font-size: 0.5rem;
+        line-height: 0.8rem;
+        text-align: center;
+        color: #4b0102;
+        background: #fa625d;
+        border: 1px solid #db4542;
+        border-radius: 50%;
+      }
+    }
+
+    &-content {
+      flex-flow: column wrap;
+      flex: 1;
+      display: flex;
+
+      .content {
+        position: absolute;
+        margin: 0;
+        padding: 1rem;
+        width: 70%;
+        height: calc(100% - 4rem);
+        font: $f_stack_console;
+        white-space: pre;
+        overflow-y: auto;
+        pointer-events: none;
+        z-index: 2;
+
+        /deep/ i {
+          font-style: normal;
+
+          &.operator {
+            color: blue;
+          }
+
+          &.unit {
+            color: red;
+          }
+        }
+      }
+
+      textarea {
+        position: relative;
+        padding: 1rem;
+        width: 70%;
+        height: 100%;
+        font: $f_stack_console;
+        color: transparent;
+        caret-color: #000;
+        appearance: none;
+        resize: none;
+        outline: none;
+        border: 0;
+        background: none;
+        z-index: 1;
+      }
+
+      aside {
+        padding: 1rem;
+        width: 30%;
+        height: 100%;
+        border-left: 1px solid rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}

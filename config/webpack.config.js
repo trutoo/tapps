@@ -76,7 +76,7 @@ module.exports = function (env) {
               },
               {
                 loader: "postcss-loader", options: {
-                  config: path.resolve(process.cwd(), 'src/styles/postcss.config.js'),
+                  config: path.resolve(process.cwd(), 'config/postcss.config.js'),
                 }
               },
             ]
@@ -93,7 +93,7 @@ module.exports = function (env) {
             },
             {
               loader: "postcss-loader", options: {
-                config: path.resolve(process.cwd(), 'src/styles/postcss.config.js'),
+                config: path.resolve(process.cwd(), 'config/postcss.config.js'),
               }
             },
           ],
@@ -105,7 +105,7 @@ module.exports = function (env) {
       // Workaround for angular/angular#11580
       new webpack.ContextReplacementPlugin(
         // The (\\|\/) piece accounts for path separators in *nix and Windows
-        /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+        /angular(\\|\/)core(\\|\/)@angular/,
         path.resolve(process.cwd(), 'src/')
       ),
       new webpack.optimize.CommonsChunkPlugin({
