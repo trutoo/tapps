@@ -1,3 +1,4 @@
+
 $c_primary: #f79d00;
 $c_secondary: #64f38c;
 
@@ -26,8 +27,8 @@ $c_secondary: #64f38c;
     }
 
     .mat-input-element {
-      text-align: center;
       padding-left: 15px;
+      text-align: center;
     }
   }
 
@@ -41,6 +42,8 @@ $c_secondary: #64f38c;
   }
 
   /* background: #ffd89b linear-gradient(to left, #ffd89b, #19547b); */
+
   /* background: #e96443 linear-gradient(to left, #e96443, #904e95); */
+
   /* background: #eecda3 linear-gradient(to left, #eecda3, #ef629f); */
 }        

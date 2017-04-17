@@ -23,25 +23,26 @@ $c_secondary: #3b4371;
       font-size: 1.5em;
       border-bottom: 1px solid $c_primary;
 
-      .close { position: absolute;
+      .close {
+        position: absolute;
+        top: 2.4rem;
         right: 2.4rem;
         width: 0.9rem;
         height: 0.9rem;
-        top: 2.4rem;
-        font-size: 0.5rem;
         line-height: 0.8rem;
-        text-align: center;
         color: #4b0102;
-        background: #fa625d;
+        font-size: 0.5rem;
+        text-align: center;
         border: 1px solid #db4542;
         border-radius: 50%;
+        background: #fa625d;
       }
     }
 
     &-content {
-      flex-flow: column wrap;
-      flex: 1;
       display: flex;
+      flex: 1;
+      flex-flow: column wrap;
 
       .content {
         position: absolute;
@@ -49,11 +50,13 @@ $c_secondary: #3b4371;
         padding: 1rem;
         width: 70%;
         height: calc(100% - 4rem);
+        z-index: 2;
         font: $f_stack_console;
         white-space: pre;
         overflow-y: auto;
+        overflow-y: auto;
         pointer-events: none;
-        z-index: 2;
+        pointer-events: none;
 
         /deep/ i {
           font-style: normal;
@@ -73,15 +76,15 @@ $c_secondary: #3b4371;
         padding: 1rem;
         width: 70%;
         height: 100%;
-        font: $f_stack_console;
+        appearance: none;
+        z-index: 1;
         color: transparent;
         caret-color: #000;
-        appearance: none;
+        font: $f_stack_console;
         resize: none;
         outline: none;
         border: 0;
         background: none;
-        z-index: 1;
       }
 
       aside {

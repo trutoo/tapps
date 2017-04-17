@@ -79,6 +79,12 @@ module.exports = function (env) {
                   config: path.resolve(process.cwd(), 'config/postcss.config.js'),
                 }
               },
+              {
+                loader: "stylefmt-loader", options: {
+                  stylefmtConfig: path.resolve(process.cwd(), 'config/stylelint.config.js'),
+                  sortingConfig: path.resolve(process.cwd(), 'config/postcss.sorting.js'),
+                }
+              },
             ]
           })
         },
@@ -94,6 +100,12 @@ module.exports = function (env) {
             {
               loader: "postcss-loader", options: {
                 config: path.resolve(process.cwd(), 'config/postcss.config.js'),
+              }
+            },
+            {
+              loader: "stylefmt-loader", options: {
+                stylefmtConfig: path.resolve(process.cwd(), 'config/stylelint.config.js'),
+                sortingConfig: path.resolve(process.cwd(), 'config/postcss.sorting.js'),
               }
             },
           ],

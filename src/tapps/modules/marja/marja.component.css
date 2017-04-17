@@ -1,3 +1,4 @@
+
 $c_primary: #eecda3;
 $c_secondary: #ef629f;
 
@@ -26,7 +27,9 @@ $c_secondary: #ef629f;
   }
 
   /* background: #ffd89b linear-gradient(to left, #ffd89b, #19547b); */
+
   /* background: #e96443 linear-gradient(to left, #e96443, #904e95); */
+
   /* background: #eecda3 linear-gradient(to left, #eecda3, #ef629f); */
 }
 
